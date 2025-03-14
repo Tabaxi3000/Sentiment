@@ -60,7 +60,7 @@ def main():
     # Record start time
     start_time = datetime.now()
     print(f"Starting improvement pipeline at {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
-    print(f"Estimated completion time: {(start_time + timedelta(hours=6)).strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"Estimated completion time: {(start_time + timedelta(hours=3)).strftime('%Y-%m-%d %H:%M:%S')}")
     
     # Create necessary directories
     os.makedirs("data", exist_ok=True)
@@ -77,7 +77,7 @@ def main():
     # Step 2: Optimize models
     if not args.skip_optimize:
         print_section("STEP 2: OPTIMIZING MODELS")
-        run_command("python quick_hyperparameter_tuning.py", "Optimizing models")
+        run_command("python simple_hyperparameter_tuning.py", "Optimizing models")
     else:
         print_section("STEP 2: OPTIMIZING MODELS (SKIPPED)")
     
