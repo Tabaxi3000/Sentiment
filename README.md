@@ -1,155 +1,187 @@
 # Sentiment Analysis Project
 
-This project implements and compares various machine learning and deep learning models for sentiment analysis on multiple datasets.
+This project implements various machine learning and deep learning models for sentiment analysis on multiple datasets.
+
+## Table of Contents
+- [Overview](#overview)
+- [Installation](#installation)
+- [Datasets](#datasets)
+- [Models](#models)
+- [Advanced Features](#advanced-features)
+- [Usage](#usage)
+- [Results](#results)
+- [Future Improvements](#future-improvements)
 
 ## Overview
 
-This project provides a framework for sentiment analysis using both traditional machine learning models and state-of-the-art deep learning approaches. It includes:
+This sentiment analysis project implements and compares various machine learning and deep learning approaches for classifying text as positive or negative. The project includes traditional machine learning models like Logistic Regression, SVM, and AdaBoost, as well as deep learning models like LSTM, BERT, and RoBERTa.
 
-- Data preprocessing and feature extraction
-- Model training and evaluation
-- Cross-validation for robust performance assessment
-- Hyperparameter tuning for model optimization
-- Visualization of results for easy comparison
+## Installation
 
-## Models Implemented
+1. Clone the repository:
+```bash
+git clone https://github.com/Tabaxi3000/Sentiment.git
+cd Sentiment
+```
 
-1. **Traditional Machine Learning Models**:
-   - Logistic Regression with TF-IDF features
-   - AdaBoost with Decision Trees
-   - Support Vector Machine (SVM) with TF-IDF features
-
-2. **Deep Learning Models**:
-   - Long Short-Term Memory (LSTM) network
-   - BERT (Bidirectional Encoder Representations from Transformers)
-   - RoBERTa (Robustly Optimized BERT Pretraining Approach)
+2. Create a virtual environment and install dependencies:
+```bash
+python -m venv sentiment_env
+source sentiment_env/bin/activate  # On Windows: sentiment_env\Scripts\activate
+pip install -r requirements.txt
+```
 
 ## Datasets
 
-The project evaluates the models on three datasets:
-- **Airlines**: Customer reviews of airlines (positive/negative sentiment)
-- **Amazon**: Product reviews from Amazon (positive/negative sentiment)
-- **Yelp**: Business reviews from Yelp (positive/negative sentiment)
+The project uses several datasets for sentiment analysis:
 
-### Dataset Characteristics
+1. **Airlines Dataset**: Contains tweets about airlines with sentiment labels.
+2. **Amazon Reviews**: Product reviews from Amazon with sentiment labels.
+3. **Yelp Reviews**: Business reviews from Yelp with sentiment labels.
+4. **IMDB Reviews**: Movie reviews from IMDB with sentiment labels.
 
-#### Airlines Dataset
-- **Source**: Twitter data about airline customer experiences
-- **Content**: Short tweets about airline experiences, often containing specific complaints or praise
-- **Language**: Often contains airline-specific terminology and abbreviations
-- **Challenges**: 
-  - Short text length limits contextual information
-  - Contains Twitter-specific language patterns
-  - Often includes mentions, hashtags, and other Twitter-specific elements
-  - Highly imbalanced (more negative than positive reviews)
+### Dataset Analysis
 
-#### Amazon Dataset
-- **Source**: Amazon product reviews
-- **Content**: Product reviews covering various categories
-- **Language**: Consumer-focused, product-specific terminology
-- **Challenges**:
-  - Product-specific vocabulary
-  - Reviews often focus on specific product features
-  - Sentiment can be mixed within a single review
+Each dataset presents unique challenges for sentiment analysis:
 
-#### Yelp Dataset
-- **Source**: Yelp business reviews
-- **Content**: Reviews of various businesses (restaurants, services, etc.)
-- **Language**: Service and experience-focused terminology
-- **Challenges**:
-  - Domain-specific vocabulary (restaurant terms, service descriptions)
-  - Often contains nuanced opinions
-  - Can include multiple aspects of a business in a single review
+- **Airlines Dataset**: Contains short texts (tweets) with airline-specific terminology and often sarcasm.
+- **Amazon Reviews**: Product reviews vary in length and contain product-specific terminology.
+- **Yelp Reviews**: Business reviews often contain location-specific references and service-related terminology.
+- **IMDB Reviews**: Movie reviews tend to be longer and contain movie-specific terminology and references.
 
-### Why Traditional ML Models Might Outperform Deep Learning on These Datasets
+## Models
 
-1. **Text Length and Structure**:
-   - These datasets often contain short, direct statements of sentiment
-   - Traditional ML models with bag-of-words/TF-IDF features can effectively capture sentiment from key words
-   - Deep learning models might not have enough context to leverage their strengths
+The project implements the following models:
 
-2. **Dataset Size**:
-   - The datasets are relatively small compared to what deep learning models typically need
-   - Traditional ML models can learn effectively from smaller datasets
+### Traditional Machine Learning Models
+- **Logistic Regression**: A simple baseline model using TF-IDF features.
+- **Support Vector Machine (SVM)**: A powerful model for text classification using TF-IDF features.
+- **AdaBoost**: An ensemble method that combines multiple weak classifiers.
 
-3. **Domain Specificity**:
-   - Each dataset contains domain-specific language
-   - Pretrained models might not be optimized for these specific domains
-   - Traditional ML models learn directly from the domain-specific data
+### Deep Learning Models
+- **LSTM**: A recurrent neural network architecture suitable for sequential data like text.
+- **BERT**: A transformer-based model pre-trained on a large corpus of text.
+- **RoBERTa**: An optimized version of BERT with improved training methodology.
 
-4. **Clear Sentiment Indicators**:
-   - These datasets often contain clear lexical indicators of sentiment
-   - Words like "great", "terrible", "love", "hate" are strong predictors
-   - TF-IDF features can effectively capture these indicators
+## Advanced Features
 
-## Performance Analysis
+### Data Augmentation
 
-### Why Different Models Perform Differently
+The project includes a data augmentation module (`data_augmentation.py`) that combines all datasets and implements various text augmentation techniques:
 
-#### Traditional ML Models vs. Deep Learning Models
+- **Synonym Replacement**: Replaces random words with their synonyms.
+- **Random Insertion**: Inserts synonyms of random words at random positions.
+- **Random Swap**: Swaps random words in the text.
+- **Random Deletion**: Randomly deletes words from the text.
+- **BERT-based Augmentation**: Uses BERT to generate contextually similar sentences.
 
-1. **Data Size Requirements**:
-   - Deep learning models (BERT, RoBERTa, LSTM) typically require large amounts of training data to outperform simpler models.
-   - Traditional ML models (Logistic Regression, SVM, AdaBoost) can perform well with smaller datasets.
+To run data augmentation:
+```bash
+python data_augmentation.py
+```
 
-2. **Feature Representation**:
-   - Traditional ML models use TF-IDF features that capture important word frequencies.
-   - Deep learning models learn contextual representations that can capture more complex patterns.
-   - For datasets with clear lexical patterns, TF-IDF features might be sufficient.
+This will create an augmented dataset at `data/augmented_data.csv`.
 
-3. **Training Efficiency**:
-   - Traditional ML models train much faster and require fewer computational resources.
-   - Deep learning models, especially transformer-based models like BERT and RoBERTa, are computationally intensive.
+### Advanced Hyperparameter Tuning
 
-4. **Pretrained Knowledge**:
-   - BERT and RoBERTa leverage pretrained knowledge from large corpora.
-   - When using pretrained models without fine-tuning, performance depends on how well the pretraining aligns with the target task.
+The project includes an advanced hyperparameter tuning module (`advanced_hyperparameter_tuning.py`) that uses Bayesian optimization to find the best hyperparameters for each model:
 
-#### Specific Model Characteristics
+- **Logistic Regression**: Optimizes C, max_iter, solver, ngram_range, and max_features.
+- **SVM**: Optimizes C, kernel, gamma, ngram_range, and max_features.
+- **AdaBoost**: Optimizes n_estimators, learning_rate, ngram_range, and max_features.
 
-1. **Logistic Regression**:
-   - Simple and effective for linearly separable data.
-   - Works well when specific words are strong indicators of sentiment.
-   - Less prone to overfitting on small datasets.
+To run hyperparameter tuning:
+```bash
+python advanced_hyperparameter_tuning.py
+```
 
-2. **SVM**:
-   - Effective in high-dimensional spaces (like text data).
-   - Can capture non-linear decision boundaries with appropriate kernels.
-   - Generally performs well on text classification tasks.
+This will save the optimized models to `models/optimized/` and the optimization results to `results/optimization/`.
 
-3. **AdaBoost**:
-   - Focuses on difficult-to-classify examples.
-   - Can capture more complex patterns than logistic regression.
-   - May be sensitive to noisy data.
+### Ensemble Methods
 
-4. **LSTM**:
-   - Captures sequential patterns and long-range dependencies in text.
-   - Requires more data to learn effectively.
-   - Performance depends heavily on hyperparameter settings.
+The project includes an ensemble methods module (`ensemble_models.py`) that combines multiple models for better performance:
 
-5. **BERT/RoBERTa**:
-   - Captures bidirectional context and complex linguistic patterns.
-   - Pretrained on large corpora, which can provide knowledge transfer.
-   - Best performance typically requires fine-tuning on the target dataset.
-   - Using pretrained models directly (without fine-tuning) may not always outperform simpler models.
+- **Voting Ensemble**: Combines predictions from multiple models using weighted voting.
+- **Stacking Ensemble**: Uses a meta-model to combine predictions from base models.
 
-### Factors Affecting Model Performance
+To run ensemble methods:
+```bash
+python ensemble_models.py
+```
 
-1. **Text Length**:
-   - Short texts may not provide enough context for deep learning models to leverage their strengths.
-   - Traditional ML models might perform better on short texts with clear sentiment indicators.
+This will save the ensemble models to `models/ensemble/` and the evaluation results to `results/ensemble/`.
 
-2. **Domain Specificity**:
-   - Performance depends on how well the model's training data matches the domain of the test data.
-   - Pretrained models might not perform optimally on domain-specific language.
+## Usage
 
-3. **Preprocessing**:
-   - Different models benefit from different preprocessing approaches.
-   - The preprocessing pipeline can significantly impact model performance.
+### Basic Usage
 
-4. **Hyperparameter Tuning**:
-   - All models, especially deep learning models, benefit from proper hyperparameter tuning.
-   - Default parameters might not be optimal for specific datasets.
+To run the main experiment:
+```bash
+python main.py
+```
+
+This will train and evaluate all models on all datasets.
+
+### Cross-Validation
+
+To run cross-validation:
+```bash
+python cross_validation.py
+```
+
+This will perform k-fold cross-validation on all models.
+
+### Hyperparameter Tuning
+
+To run basic hyperparameter tuning:
+```bash
+python hyperparameter_tuning.py
+```
+
+This will perform grid search for hyperparameter tuning.
+
+### Advanced Usage
+
+For advanced usage with data augmentation, advanced hyperparameter tuning, and ensemble methods:
+
+1. Run data augmentation:
+```bash
+python data_augmentation.py
+```
+
+2. Run advanced hyperparameter tuning:
+```bash
+python advanced_hyperparameter_tuning.py
+```
+
+3. Run ensemble methods:
+```bash
+python ensemble_models.py
+```
+
+## Results
+
+The project evaluates models based on accuracy, precision, recall, and F1-score. The results are saved to the `results/` directory.
+
+### Model Performance
+
+Based on our experiments, the SVM model generally performs the best among traditional machine learning models, while BERT and RoBERTa perform the best among deep learning models. The ensemble methods typically outperform individual models.
+
+### Performance Analysis
+
+- **Traditional ML Models**: These models are faster to train and can perform well on smaller datasets. SVM typically achieves the best performance among these models.
+- **Deep Learning Models**: These models require more computational resources but can capture more complex patterns in the text. BERT and RoBERTa typically outperform LSTM.
+- **Ensemble Methods**: Combining multiple models can lead to better performance than individual models. The stacking ensemble typically outperforms the voting ensemble.
+
+## Future Improvements
+
+Potential improvements for the project include:
+
+- **More Advanced Augmentation**: Implement more advanced text augmentation techniques.
+- **Model Distillation**: Distill knowledge from large models to smaller, more efficient models.
+- **Multi-task Learning**: Train models on multiple related tasks to improve performance.
+- **Explainability**: Implement methods to explain model predictions.
+- **Deployment**: Create a web application for real-time sentiment analysis.
 
 ## Features
 
@@ -184,91 +216,6 @@ The project evaluates the models on three datasets:
 ├── hyperparameter_tuning.py   # Script for hyperparameter tuning
 └── requirements.txt           # Python dependencies
 ```
-
-## Installation
-
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/sentiment-analysis.git
-cd sentiment-analysis
-```
-
-2. Create a virtual environment:
-```bash
-python -m venv sentiment_env
-source sentiment_env/bin/activate  # On Windows: sentiment_env\Scripts\activate
-```
-
-3. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-## Usage
-
-### Running the Main Experiment
-
-```bash
-python main.py
-```
-
-This will train and evaluate all models on all datasets, saving the results in the `results` directory.
-
-### Running Cross-Validation
-
-```bash
-python cross_validation.py
-```
-
-This will perform k-fold cross-validation for all models on all datasets, providing more robust performance metrics.
-
-### Running Hyperparameter Tuning
-
-```bash
-python hyperparameter_tuning.py
-```
-
-This will perform grid search to find the optimal hyperparameters for each model on each dataset.
-
-## Results
-
-The results are saved in the following formats:
-
-- **CSV files**: Detailed metrics for each model and dataset
-- **PNG images**: Visualizations of model performance, including:
-  - Confusion matrices
-  - Accuracy comparisons
-  - Training time comparisons
-
-## Requirements
-
-- Python 3.8+
-- PyTorch 1.8+
-- Transformers 4.5+
-- scikit-learn 0.24+
-- pandas, numpy, matplotlib, seaborn
-- tqdm for progress tracking
-
-## GPU Acceleration
-
-The project automatically detects and uses available GPU resources. For optimal performance with deep learning models (BERT, RoBERTa, LSTM), a CUDA-compatible GPU is recommended.
-
-## Customization
-
-### Adding New Models
-
-To add a new model:
-
-1. Create a new file in the `models` directory
-2. Implement a class with `train`, `predict`, and `evaluate` methods
-3. Add the model to the model list in `main.py`, `cross_validation.py`, and `hyperparameter_tuning.py`
-
-### Adding New Datasets
-
-To add a new dataset:
-
-1. Place the dataset file in the `data` directory
-2. Add the dataset path to the `datasets` dictionary in the main scripts
 
 ## License
 
