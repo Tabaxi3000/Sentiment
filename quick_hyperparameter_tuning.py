@@ -82,6 +82,21 @@ def optimize_logistic_regression(X_train, y_train, X_test, y_test):
         def score(self, X, y):
             y_pred = self.predict(X)
             return accuracy_score(y, y_pred)
+            
+        # Add get_params and set_params methods required by GridSearchCV
+        def get_params(self, deep=True):
+            return {
+                'C': self.C,
+                'max_iter': self.max_iter,
+                'solver': self.solver,
+                'ngram_range': self.ngram_range,
+                'max_features': self.max_features
+            }
+        
+        def set_params(self, **parameters):
+            for parameter, value in parameters.items():
+                setattr(self, parameter, value)
+            return self
     
     # Define parameter grid (limited for quick results)
     param_grid = {
@@ -192,6 +207,21 @@ def optimize_svm(X_train, y_train, X_test, y_test):
         def score(self, X, y):
             y_pred = self.predict(X)
             return accuracy_score(y, y_pred)
+            
+        # Add get_params and set_params methods required by GridSearchCV
+        def get_params(self, deep=True):
+            return {
+                'C': self.C,
+                'kernel': self.kernel,
+                'gamma': self.gamma,
+                'ngram_range': self.ngram_range,
+                'max_features': self.max_features
+            }
+        
+        def set_params(self, **parameters):
+            for parameter, value in parameters.items():
+                setattr(self, parameter, value)
+            return self
     
     # Define parameter grid (limited for quick results)
     param_grid = {
