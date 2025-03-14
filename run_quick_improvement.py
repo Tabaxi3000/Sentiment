@@ -77,7 +77,7 @@ def main():
     # Step 2: Optimize models
     if not args.skip_optimize:
         print_section("STEP 2: OPTIMIZING MODELS")
-        run_command("python simple_hyperparameter_tuning.py", "Optimizing models")
+        run_command("python cpu_hyperparameter_tuning.py", "Optimizing models")
     else:
         print_section("STEP 2: OPTIMIZING MODELS (SKIPPED)")
     
