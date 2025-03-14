@@ -1,0 +1,2 @@
+Model,Best CV Score,Test Accuracy,Tuning Time (s),Best clf__C,Best clf__max_iter,Best clf__solver,Best tfidf__max_features,Best tfidf__ngram_range
+logistic_regression,0.9009259259259259,0.9067901234567901,192.43994903564453,10.0,1000,liblinear,10000,"(1, 2)"
